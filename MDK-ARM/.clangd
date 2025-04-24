@@ -1,0 +1,6 @@
+CompileFlags:
+    Add:
+        - -IC:\Users\HUANG\AppData\Local\Keil_v5\ARM\ARMCLANG/include
+        - -IC:\Users\HUANG\AppData\Local\Keil_v5\ARM\ARMCLANG/include/libcxx
+    CompilationDatabase: ./build/ui
+    Compiler: C:\Users\HUANG\AppData\Local\Keil_v5\ARM\ARMCLANG\bin\armclang.exe

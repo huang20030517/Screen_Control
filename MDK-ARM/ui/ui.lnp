@@ -25,12 +25,11 @@
 "ui\stm32f4xx_hal_uart.o"
 "ui\system_stm32f4xx.o"
 "ui\key.o"
-"ui\event.o"
-"ui\state.o"
 "ui\ui.o"
+"ui\state.o"
 "ui\data.o"
 "ui\tjc4832k035_011n.o"
---strict --scatter "ui\ui.sct"
+--library_type=microlib --strict --scatter "ui\ui.sct"
 --summary_stderr --info summarysizes --map --load_addr_map_info --xref --callgraph --symbols
 --info sizes --info totals --info unused --info veneers
 --list "ui.map" -o ui\ui.axf

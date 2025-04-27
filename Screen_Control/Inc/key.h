@@ -20,14 +20,15 @@ typedef enum
 		
 	KEY_ID_REMOTE, // 远程控制
 	
-    KEY_ID_COUNT // 按键总数（自动计算为9）
+    KEY_ID_COUNT // 按键总数
 } KeyID;
 
 // 按键事件类型（短按/长按）
 typedef enum
 {
-    KEY_EVENT_SHORT_PRESS = 0,
-    KEY_EVENT_LONG_PRESS
+    KEY_EVENT_SHORT_PRESS = 0, // 短按
+    KEY_EVENT_LONG_PRESS,      // 长按
+		KEY_EVENT_UNKNOWN      // 未知
 } KeyEventType;
 
 // 按键事件结构体
@@ -45,3 +46,4 @@ void Key_Init(void);
 KeyEvent Key_Scan(void);
 
 #endif
+	

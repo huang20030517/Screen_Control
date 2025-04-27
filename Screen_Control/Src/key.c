@@ -1,6 +1,5 @@
 #include "key.h"
 
-
 static const struct
 {
     KeyID key_id;
@@ -37,11 +36,16 @@ void Key_Init(void)
     memset(key_states, 0, sizeof(key_states));
 }
 
+
+
 /// @brief 按键扫描
 /// @return 按键事件
 KeyEvent Key_Scan(void)
 {
-    KeyEvent event = {.key_id = KEY_ID_COUNT}; // 无效事件默认值
+    
+	KeyEvent event = {.key_id = KEY_ID_COUNT, 
+					  .event_type = KEY_EVENT_UNKNOWN,
+					  .timestamp = 0};	
 
 	#if REMOTE_ACTIVE == 1
         uint8_t remote_state = (HAL_GPIO_ReadPin(key_config[KEY_ID_REMOTE].gpio_port,

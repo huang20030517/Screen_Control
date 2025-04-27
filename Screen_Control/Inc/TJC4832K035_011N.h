@@ -4,8 +4,7 @@
 #include "config.h"
 #include <stdbool.h>
 
-#define SCREEN      11314
-
+#define LIGHT_BLUE     11314 // 浅蓝色
 #define RED       63488   // 红色
 #define BLUE      31      // 蓝色  
 #define GRAY      33840   // 灰色

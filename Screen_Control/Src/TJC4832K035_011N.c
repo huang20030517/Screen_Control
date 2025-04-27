@@ -39,10 +39,16 @@ void Screen_Clear(uint16_t color)
         return;
 
     HAL_UART_Transmit_DMA(&SCREEN_USART_HANDLE, dma_buffer, cmd_len);
+	
+	// 等待 DMA 传输完成
+    while (__HAL_UART_GET_FLAG(&SCREEN_USART_HANDLE, UART_FLAG_TC) == RESET)
+    {
+        // 等待传输完成
+    }
 }
 
 /// @brief 设置屏幕休眠
-/// @param is_sleep 是否休眠
+/// @param is_sleep 是否休眠(1 - 睡觉, 0 - 起床)
 void Set_Screen_Sleep(bool is_sleep)
 {
     static uint8_t dma_buffer[16];
@@ -65,6 +71,12 @@ void Set_Screen_Sleep(bool is_sleep)
         return;
 
     HAL_UART_Transmit_DMA(&SCREEN_USART_HANDLE, dma_buffer, cmd_len);
+	
+	// 等待 DMA 传输完成
+    while (__HAL_UART_GET_FLAG(&SCREEN_USART_HANDLE, UART_FLAG_TC) == RESET)
+    {
+        // 等待传输完成
+    }
 }
 
 /*
@@ -76,9 +88,9 @@ void Set_Screen_Sleep(bool is_sleep)
  * @param fontid 字库ID
  * @param point_color 字体颜色
  * @param back_color 背景色
- * @param x_center 水平对齐方式
- * @param y_center 垂直对齐方式
- * @param sta 背景填充方式
+ * @param xcenter:水平对齐方式(0为左对齐，1为居中，2为右对齐)；
+ * @param ycenter 垂直对齐方式(0为上对齐，1为居中，2为下对齐)；
+ * @param sta 背景填充方式(0为切图，1为单色，2为图片，3为无背景,sta设置为切图或图片时，backcolor表示图片ID)
  * @param text 字符内容
  */
 void Send_Xstr(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
@@ -94,19 +106,25 @@ void Send_Xstr(uint16_t x, uint16_t y, uint16_t w, uint16_t h,
                            x, y, w, h, fontid,
                            point_color, back_color, x_center, y_center, sta, text);
 
-    // 手动添加三个0xFF终止符
-    if (cmd_len > 0 && (size_t)cmd_len < sizeof(dma_buffer) - 3)
-    {
-        memset(dma_buffer + cmd_len, 0xFF, 3);
-        cmd_len += 3;
-    }
-    else
+    // 检查命令长度是否有效
+    if (cmd_len <= 0 || (size_t)cmd_len >= sizeof(dma_buffer) - 3)
     {
         return; // 缓冲区溢出保护
     }
 
+    // 手动添加三个0xFF终止符
+    memset(dma_buffer + cmd_len, 0xFF, 3);
+    cmd_len += 3;
+
+    // 确保 UART 准备就绪
     UART_READY();
 
-    // 启动DMA传输（自动设置BSY标志）
+    // 启动 DMA 传输（自动设置 BSY 标志）
     HAL_UART_Transmit_DMA(&SCREEN_USART_HANDLE, dma_buffer, cmd_len);
+
+    // 等待 DMA 传输完成
+    while (__HAL_UART_GET_FLAG(&SCREEN_USART_HANDLE, UART_FLAG_TC) == RESET)
+    {
+        // 等待传输完成
+    }
 }

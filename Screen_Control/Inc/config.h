@@ -41,7 +41,7 @@
 #define LOCAL_ACTIVE  2   // 本地 
 #define REMOTE_ACTIVE 2   // 远程
 
-// 按键长按时间配置
+// 按键长按时间配置(单位为毫秒)
 #define LONG_PRESS_MS 1000  
 
 

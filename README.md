@@ -1,7 +1,5 @@
 # 嵌入式屏幕控制框架
 
-# 🖥️ Screen Control
-
 [](https://img.shields.io/badge/license-MIT-green)
 
 [](https://img.shields.io/badge/version-1.0.0-green)

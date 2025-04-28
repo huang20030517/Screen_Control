@@ -25,6 +25,7 @@
 "ui\stm32f4xx_hal_uart.o"
 "ui\system_stm32f4xx.o"
 "ui\key.o"
+"ui\menu_draw.o"
 "ui\ui.o"
 "ui\state.o"
 "ui\data.o"

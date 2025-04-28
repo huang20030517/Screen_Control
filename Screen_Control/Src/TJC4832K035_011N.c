@@ -39,8 +39,8 @@ void Screen_Clear(uint16_t color)
         return;
 
     HAL_UART_Transmit_DMA(&SCREEN_USART_HANDLE, dma_buffer, cmd_len);
-	
-	// 等待 DMA 传输完成
+
+    // 等待 DMA 传输完成
     while (__HAL_UART_GET_FLAG(&SCREEN_USART_HANDLE, UART_FLAG_TC) == RESET)
     {
         // 等待传输完成
@@ -71,8 +71,8 @@ void Set_Screen_Sleep(bool is_sleep)
         return;
 
     HAL_UART_Transmit_DMA(&SCREEN_USART_HANDLE, dma_buffer, cmd_len);
-	
-	// 等待 DMA 传输完成
+
+    // 等待 DMA 传输完成
     while (__HAL_UART_GET_FLAG(&SCREEN_USART_HANDLE, UART_FLAG_TC) == RESET)
     {
         // 等待传输完成

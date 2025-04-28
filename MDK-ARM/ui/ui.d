@@ -35,4 +35,6 @@ ui/ui.o: ..\screen_control\Src\ui.c ..\screen_control\Inc\ui.h \
   ..\Core\Inc\main.h ..\Core\Inc\gpio.h ..\screen_control\Inc\state.h \
   C:\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdbool.h \
   ..\screen_control\Inc\data.h ..\screen_control\Inc\TJC4832K035_011N.h \
-  ..\screen_control\Inc\state.h ..\screen_control\Inc\TJC4832K035_011N.h
+  ..\screen_control\Inc\menu_draw.h ..\screen_control\Inc\state.h \
+  ..\screen_control\Inc\TJC4832K035_011N.h \
+  ..\screen_control\Inc\menu_draw.h

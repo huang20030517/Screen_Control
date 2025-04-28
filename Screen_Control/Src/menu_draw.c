@@ -2,221 +2,297 @@
 #include "TJC4832K035_011N.h"
 #include <string.h>
 
-/*-------------------------- ç•Œé¢å¸¸é‡ --------------------------*/
-#define SCREEN_WIDTH   480
-#define SCREEN_HEIGHT  320
-#define FONT_WIDTH     16    // æ¯ä¸ªå­—ç¬¦å®½åº¦ï¼ˆåƒç´ ï¼‰
-#define FONT_HEIGHT    35    // æ¯ä¸ªå­—ç¬¦é«˜åº¦ï¼ˆåƒç´ ï¼‰
+/*-------------------------- ½çÃæ³£Á¿ --------------------------*/
+#define SCREEN_WIDTH 480
+#define SCREEN_HEIGHT 320
+#define FONT_WIDTH 16  // Ã¿¸ö×Ö·û¿í¶È£¨ÏñËØ£©
+#define FONT_HEIGHT 35 // Ã¿¸ö×Ö·û¸ß¶È£¨ÏñËØ£©
 
+// Ò»¼¶²Ëµ¥ÄÚÈİ
+static const char *main_menu_items[] = {
+    "1. ¹¤×÷Ä£Ê½Ñ¡Ôñ",
+    "2. ¹¤×÷²ÎÊıÉèÖÃ",
+    "3. ¿ØÖÆÆ÷²ÎÊı"};
 
-/*-------------------------- èœå•é¡¹å†…å®¹ --------------------------*/
-// ä¸€çº§èœå•å†…å®¹
-static const char* main_menu_items[] = {
-    "1. å·¥ä½œæ¨¡å¼é€‰æ‹©",
-    "2. å·¥ä½œå‚æ•°è®¾ç½®",
-    "3. æ§åˆ¶å™¨å‚æ•°"
-};
+// ¹¤×÷Ä£Ê½²Ëµ¥ÄÚÈİ
+static const char *work_mode_menu_items[] = {
+    "1. ×Ô¶¯¹Ø",
+    "2. ×Ô¶¯¿ª",
+    "3. ÂıËÙÕæ¿Õ¿ØÖÆ",
+    "4. Õæ¿ÕÑ¹Á¦¿ØÖÆ",
+    "5. ·§ÃÅ¿ª¶È¿ØÖÆ",
+    "6. ·§ÃÅ¿ª¶È±£³Ö"};
 
-// å·¥ä½œæ¨¡å¼èœå•å†…å®¹
-static const char* work_mode_menu_items[] = {
-    "1. è‡ªåŠ¨å…³",
-    "2. è‡ªåŠ¨å¼€",
-    "3. æ…¢é€ŸçœŸç©ºæ§åˆ¶",
-    "4. çœŸç©ºå‹åŠ›æ§åˆ¶",
-    "5. é˜€é—¨å¼€åº¦æ§åˆ¶",
-    "6. é˜€é—¨å¼€åº¦ä¿æŒ"
-};
+// ¹¤×÷²ÎÊı²Ëµ¥ÄÚÈİ
+static const char *work_params_menu_items[] = {
+    "1. Ñ¹Á¦µ¥Î»ÉèÖÃ",
+    "2. ¿ØÑ¹PIDÉèÖÃ",
+    "3. Î»ÖÃ»·PIDÉèÖÃ",
+    "4. ·§ÃÅÈ«¹ØÖµÉèÖÃ",
+    "5. ÁãµãĞ£×¼",
+    "6. REMOTE¼ì²é",
+    "7. ´íÎó¼ÇÂ¼"};
 
-// å·¥ä½œå‚æ•°èœå•å†…å®¹
-static const char* work_params_menu_items[] = {
-    "1. å‹åŠ›å•ä½è®¾ç½®",
-    "2. æ§å‹PIDè®¾ç½®",
-    "3. ä½ç½®ç¯PIDè®¾ç½®",
-    "4. é˜€é—¨å…¨å…³å€¼è®¾ç½®",
-    "5. é›¶ç‚¹æ ¡å‡†",
-    "6. REMOTEæ£€æŸ¥",
-    "7. é”™è¯¯è®°å½•"
-};
-
-// æ§åˆ¶å™¨å‚æ•°èœå•å†…å®¹
-static const char* ctrl_params_menu_items[] = {
-    "1. ä¼ æ„Ÿå™¨é‡ç¨‹è®¾ç½®",
-    "2. è”é”å‚æ•°è®¾ç½®",
-    "3. é€šä¿¡è®¾ç½®",
-    "4. ç½‘å£è®¾ç½®",
-    "5. ä¼ æ„Ÿå™¨ä¿¡å·åç½®",
-    "6. æ¨¡æ‹Ÿé‡è¾“å…¥æ ¡å‡†",
-    "7. æ¨¡æ‹Ÿé‡è¾“å…¥ä¿¡å·åç½®",
-    "8. æ¢å¤é»˜è®¤",
-    "9. æ§åˆ¶å™¨é»˜è®¤å€¼è®¾ç½®",
-    "10. å¼€å…³è®¡æ•°é˜€å€¼è®¾ç½®"
-};
-
+// ¿ØÖÆÆ÷²ÎÊı²Ëµ¥ÄÚÈİ
+static const char *ctrl_params_menu_items[] = {
+    " 1. ´«¸ĞÆ÷Á¿³ÌÉèÖÃ",
+    " 2. ÁªËø²ÎÊıÉèÖÃ",
+    " 3. Í¨ĞÅÉèÖÃ",
+    " 4. Íø¿ÚÉèÖÃ",
+    " 5. ´«¸ĞÆ÷ĞÅºÅÆ«ÖÃ",
+    " 6. Ä£ÄâÁ¿ÊäÈëĞ£×¼",
+    " 7. Ä£ÄâÁ¿ÊäÈëĞÅºÅÆ«ÖÃ",
+    " 8. »Ö¸´Ä¬ÈÏ",
+    " 9. ¿ØÖÆÆ÷Ä¬ÈÏÖµÉèÖÃ",
+    "10. ¿ª¹Ø¼ÆÊı·§ÖµÉèÖÃ"};
 /**
- * @brief ç»˜åˆ¶èœå•æ ‡é¢˜
- * @param title æ ‡é¢˜æ–‡æœ¬
+ * @brief »æÖÆ²Ëµ¥±êÌâ
+ * @param title ±êÌâÎÄ±¾
  */
-void Draw_Title(const char* title)
+void Draw_Title(const char *title)
 {
-    uint16_t title_width = strlen(title) * FONT_WIDTH * 1.5; // é€‚å½“è°ƒæ•´æ ‡é¢˜åŒºåŸŸå®½åº¦
+    uint16_t title_width = strlen(title) * FONT_WIDTH * 1.5; // ÊÊµ±µ÷Õû±êÌâÇøÓò¿í¶È
     uint16_t title_x = (SCREEN_WIDTH - title_width) / 2;
-    
-    // æ„å»ºå¸¦å¼•å·çš„æ ‡é¢˜å­—ç¬¦ä¸²
+
+    // ¹¹½¨´øÒıºÅµÄ±êÌâ×Ö·û´®
     char quoted_title[32];
     snprintf(quoted_title, sizeof(quoted_title), "\"%s\"", title);
-    
-    // ä½¿ç”¨ä¸­ç­‰å¤§å°å­—ä½“(fontid=2)ï¼Œä¿æŒæ°´å¹³å±…ä¸­(xcenter=1)å’Œå‚ç›´å±…ä¸­(ycenter=1)
+
+    // Ê¹ÓÃÖĞµÈ´óĞ¡×ÖÌå(fontid=2)£¬±£³ÖË®Æ½¾ÓÖĞ(xcenter=1)ºÍ´¹Ö±¾ÓÖĞ(ycenter=1)
     Send_Xstr(title_x, 20, title_width, FONT_HEIGHT * 1.2, 2, BLACK, LIGHT_BLUE, 1, 1, 1, quoted_title);
 }
 
 /**
- * @brief åœ¨æŒ‡å®šä½ç½®ç»˜åˆ¶å¸¦é€‰ä¸­çŠ¶æ€çš„èœå•é¡¹
- * @param x èœå•é¡¹èµ·å§‹ X åæ ‡ï¼ˆåŒºåŸŸå·¦ä¸Šè§’ï¼‰
- * @param y èœå•é¡¹èµ·å§‹ Y åæ ‡ï¼ˆåŒºåŸŸå·¦ä¸Šè§’ï¼‰
- * @param text èœå•é¡¹æ–‡æœ¬
- * @param is_selected æ˜¯å¦è¢«é€‰ä¸­
- * @param font_size å­—ä½“å¤§å°ID
- * @param item_height èœå•é¡¹é«˜åº¦
+ * @brief ÔÚÖ¸¶¨Î»ÖÃ»æÖÆ´øÑ¡ÖĞ×´Ì¬µÄ²Ëµ¥Ïî
+ * @param x ²Ëµ¥ÏîÆğÊ¼ X ×ø±ê£¨ÇøÓò×óÉÏ½Ç£©
+ * @param y ²Ëµ¥ÏîÆğÊ¼ Y ×ø±ê£¨ÇøÓò×óÉÏ½Ç£©
+ * @param text ²Ëµ¥ÏîÎÄ±¾
+ * @param is_selected ÊÇ·ñ±»Ñ¡ÖĞ
+ * @param font_size ×ÖÌå´óĞ¡ID
+ * @param item_height ²Ëµ¥Ïî¸ß¶È
  */
-void Draw_Menu_Item(uint16_t x, uint16_t y, const char* text, uint8_t is_selected, uint8_t font_size, uint16_t item_height)
+void Draw_Menu_Item(uint16_t x, uint16_t y, const char *text, uint8_t is_selected, uint8_t font_size, uint16_t item_height)
 {
-    // ç®­å¤´å®½åº¦
+    // ¼ıÍ·¿í¶È
     const uint16_t arrow_width = 30;
-    
-    // ç»˜åˆ¶ç®­å¤´æŒ‡ç¤ºå½“å‰é€‰ä¸­é¡¹ï¼ˆyè½´å±…ä¸­å¯¹é½ï¼‰
-    if (is_selected) {
-        Send_Xstr(x, y, arrow_width, item_height, font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\"â†’\"");
-    } else {
+
+    // »æÖÆ¼ıÍ·Ö¸Ê¾µ±Ç°Ñ¡ÖĞÏî£¨yÖá¾ÓÖĞ¶ÔÆë£©
+    if (is_selected)
+    {
+        Send_Xstr(x, y, arrow_width, item_height, font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\"¡ú\"");
+    }
+    else
+    {
         Send_Xstr(x, y, arrow_width, item_height, font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\" \"");
     }
-    
-    // ç»˜åˆ¶èœå•é¡¹æ–‡æœ¬ï¼ˆå·¦å¯¹é½ï¼Œyè½´å±…ä¸­å¯¹é½ï¼‰
+
+    // »æÖÆ²Ëµ¥ÏîÎÄ±¾£¨×ó¶ÔÆë£¬yÖá¾ÓÖĞ¶ÔÆë£©
     char quoted_text[64];
     snprintf(quoted_text, sizeof(quoted_text), "\"%s\"", text);
-    
-    // æ–‡æœ¬åŒºåŸŸä»ç®­å¤´åŒºåŸŸå³ä¾§å¼€å§‹ï¼Œå®½åº¦è‡ªé€‚åº”
-    Send_Xstr(x + arrow_width, y, SCREEN_WIDTH - x - arrow_width - 10, item_height, 
+
+    // ÎÄ±¾ÇøÓò´Ó¼ıÍ·ÇøÓòÓÒ²à¿ªÊ¼£¬¿í¶È×ÔÊÊÓ¦
+    Send_Xstr(x + arrow_width, y, SCREEN_WIDTH - x - arrow_width - 10, item_height,
               font_size, BLACK, LIGHT_BLUE, 0, 1, 1, quoted_text);
 }
 
 /**
- * @brief ç»˜åˆ¶äºŒçº§èœå•é€šç”¨ç•Œé¢
- * @param title èœå•æ ‡é¢˜
- * @param items èœå•é¡¹æ•°ç»„
- * @param item_count èœå•é¡¹æ•°é‡
- * @param selected_index å½“å‰é€‰ä¸­çš„èœå•é¡¹ç´¢å¼•
+ * @brief »æÖÆ¶ş¼¶²Ëµ¥Í¨ÓÃ½çÃæ
+ * @param title ²Ëµ¥±êÌâ
+ * @param items ²Ëµ¥ÏîÊı×é
+ * @param item_count ²Ëµ¥ÏîÊıÁ¿
+ * @param selected_index µ±Ç°Ñ¡ÖĞµÄ²Ëµ¥ÏîË÷Òı
  */
-static void Draw_Submenu(const char* title, const char** items, int item_count, int selected_index)
+static void Draw_Submenu(const char *title, const char **items, int item_count, int selected_index)
 {
-    // äºŒçº§èœå•å‚æ•°
-    const uint8_t sub_font_size = 0;           // äºŒçº§èœå•å­—ä½“è¾ƒå°
-    const uint16_t sub_left_margin = 110;      // äºŒçº§èœå•å·¦è¾¹è·è¾ƒå°
-    const uint16_t sub_start_y = 75;           // äºŒçº§èœå•èµ·å§‹Yåæ ‡
-    const uint16_t sub_item_height = 35;       // äºŒçº§èœå•é¡¹é«˜åº¦
-    
-    // æ¸…å±ï¼Œè“è‰²èƒŒæ™¯
+    // ¶ş¼¶²Ëµ¥²ÎÊı
+    const uint8_t sub_font_size = 0;      // ¶ş¼¶²Ëµ¥×ÖÌå½ÏĞ¡
+    const uint16_t sub_left_margin = 110; // ¶ş¼¶²Ëµ¥×ó±ß¾à½ÏĞ¡
+    const uint16_t sub_start_y = 75;      // ¶ş¼¶²Ëµ¥ÆğÊ¼Y×ø±ê
+    const uint16_t sub_item_height = 35;  // ¶ş¼¶²Ëµ¥Ïî¸ß¶È
+
+    // ÇåÆÁ£¬À¶É«±³¾°
     Screen_Clear(LIGHT_BLUE);
-    
-    // ç»˜åˆ¶æ ‡é¢˜
+
+    // »æÖÆ±êÌâ
     Draw_Title(title);
-    
-    // è®¡ç®—æ¯é¡µæ˜¾ç¤ºçš„èœå•é¡¹æ•°é‡
+
+    // ¼ÆËãÃ¿Ò³ÏÔÊ¾µÄ²Ëµ¥ÏîÊıÁ¿
     const int items_per_page = 5;
-    
-    // è®¡ç®—å½“å‰é¡µ
+
+    // ¼ÆËãµ±Ç°Ò³
     int current_page = selected_index / items_per_page;
-    
-    // è®¡ç®—è¯¥é¡µç¬¬ä¸€ä¸ªèœå•é¡¹çš„ç´¢å¼•
+
+    // ¼ÆËã¸ÃÒ³µÚÒ»¸ö²Ëµ¥ÏîµÄË÷Òı
     int first_item_index = current_page * items_per_page;
-    
-    // è®¡ç®—è¯¥é¡µçš„èœå•é¡¹æ•°é‡
-    int page_item_count = (item_count - first_item_index < items_per_page) ? 
-                          (item_count - first_item_index) : items_per_page;
-    
-    // ç»˜åˆ¶å½“å‰é¡µçš„èœå•é¡¹
-    for (int i = 0; i < page_item_count; i++) {
+
+    // ¼ÆËã¸ÃÒ³µÄ²Ëµ¥ÏîÊıÁ¿
+    int page_item_count = (item_count - first_item_index < items_per_page) ? (item_count - first_item_index) : items_per_page;
+
+    // »æÖÆµ±Ç°Ò³µÄ²Ëµ¥Ïî
+    for (int i = 0; i < page_item_count; i++)
+    {
         int item_index = first_item_index + i;
-        Draw_Menu_Item(sub_left_margin, sub_start_y + i * sub_item_height, 
-                      items[item_index], 
-                      item_index == selected_index,
-                      sub_font_size, sub_item_height);
+        Draw_Menu_Item(sub_left_margin, sub_start_y + i * sub_item_height,
+                       items[item_index],
+                       item_index == selected_index,
+                       sub_font_size, sub_item_height);
     }
-    
-    // æ·»åŠ é¡µç æŒ‡ç¤ºï¼ˆæ˜¾ç¤ºå½“å‰é¡µ/æ€»é¡µæ•°ï¼‰
-    if (item_count > items_per_page) {
+
+    // Ìí¼ÓÒ³ÂëÖ¸Ê¾£¨ÏÔÊ¾µ±Ç°Ò³/×ÜÒ³Êı£©
+    if (item_count > items_per_page)
+    {
         int total_pages = (item_count + items_per_page - 1) / items_per_page;
         char page_info[20];
         snprintf(page_info, sizeof(page_info), "\"%d/%d\"", current_page + 1, total_pages);
-        // å³ä¸‹è§’æ˜¾ç¤ºé¡µç ï¼Œå³å¯¹é½(xcenter=2)
+        // ÓÒÏÂ½ÇÏÔÊ¾Ò³Âë£¬ÓÒ¶ÔÆë(xcenter=2)
         Send_Xstr(SCREEN_WIDTH - 60, SCREEN_HEIGHT - 30, 50, 20, 1, BLACK, LIGHT_BLUE, 2, 1, 1, page_info);
     }
 }
 
 /**
- * @brief ç»˜åˆ¶ä¸»èœå•ï¼ˆä¸€çº§èœå•ï¼‰
+ * @brief »æÖÆÖ÷²Ëµ¥£¨Ò»¼¶²Ëµ¥£©
  */
 void Draw_Menu(void)
 {
-    MenuContext* menu = Get_Menu_Context();
-    
-    // ä¸€çº§èœå•å‚æ•°
-    const uint8_t main_font_size = 2;           // ä¸€çº§èœå•ä½¿ç”¨æ›´å¤§å­—ä½“
-    const uint16_t main_left_margin = 90;       // ä¸€çº§èœå•å·¦è¾¹è·
-    const uint16_t main_start_y = 90;           // ä¸€çº§èœå•èµ·å§‹Yåæ ‡
-    const uint16_t main_item_height = 50;       // ä¸€çº§èœå•é¡¹é«˜åº¦
-    
-    // æ¸…å±ï¼Œè“è‰²èƒŒæ™¯
+    MenuContext *menu = Get_Menu_Context();
+
+    // Ò»¼¶²Ëµ¥²ÎÊı
+    const uint8_t main_font_size = 2;     // Ò»¼¶²Ëµ¥Ê¹ÓÃ¸ü´ó×ÖÌå
+    const uint16_t main_left_margin = 90; // Ò»¼¶²Ëµ¥×ó±ß¾à
+    const uint16_t main_start_y = 90;     // Ò»¼¶²Ëµ¥ÆğÊ¼Y×ø±ê
+    const uint16_t main_item_height = 50; // Ò»¼¶²Ëµ¥Ïî¸ß¶È
+
+    // ÇåÆÁ£¬À¶É«±³¾°
     Screen_Clear(LIGHT_BLUE);
-    
-    // ç»˜åˆ¶æ ‡é¢˜
-    Draw_Title("ä¸»èœå•");
-    
-    // ç»˜åˆ¶èœå•é¡¹ï¼ˆä¸€çº§èœå•é¡¹è¾ƒå°‘ï¼Œä¸éœ€è¦åˆ†é¡µï¼‰
-    for (int i = 0; i < 3; i++) {
-        // ä¸ºä¸»èœå•é¡¹å•ç‹¬ç»˜åˆ¶ç®­å¤´ï¼Œä½¿ç”¨æ›´å¤§çš„å­—ä½“
+
+    // »æÖÆ±êÌâ
+    Draw_Title("Ö÷²Ëµ¥");
+
+    // »æÖÆ²Ëµ¥Ïî£¨Ò»¼¶²Ëµ¥Ïî½ÏÉÙ£¬²»ĞèÒª·ÖÒ³£©
+    for (int i = 0; i < 3; i++)
+    {
+        // ÎªÖ÷²Ëµ¥Ïîµ¥¶À»æÖÆ¼ıÍ·£¬Ê¹ÓÃ¸ü´óµÄ×ÖÌå
         uint16_t x = main_left_margin;
         uint16_t y = main_start_y + i * main_item_height;
-        
-        // ç»˜åˆ¶ç®­å¤´æˆ–ç©ºæ ¼ï¼ˆä½¿ç”¨ä¸ä¸»èœå•å­—ä½“ç›¸åŒçš„å¤§å°ï¼‰
-        if (i == menu->cursor_pos) {
-            Send_Xstr(x, y, 40, main_item_height, main_font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\"â†’\"");
-        } else {
+
+        // »æÖÆ¼ıÍ·»ò¿Õ¸ñ£¨Ê¹ÓÃÓëÖ÷²Ëµ¥×ÖÌåÏàÍ¬µÄ´óĞ¡£©
+        if (i == menu->cursor_pos)
+        {
+            Send_Xstr(x, y, 40, main_item_height, main_font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\"¡ú\"");
+        }
+        else
+        {
             Send_Xstr(x, y, 40, main_item_height, main_font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\" \"");
         }
-        
-        // ç»˜åˆ¶èœå•é¡¹æ–‡æœ¬
+
+        // »æÖÆ²Ëµ¥ÏîÎÄ±¾
         char quoted_text[64];
         snprintf(quoted_text, sizeof(quoted_text), "\"%s\"", main_menu_items[i]);
-        
-        // ä½¿ç”¨ç›¸åŒçš„å¤§å­—ä½“
-        Send_Xstr(x + 40, y, SCREEN_WIDTH - x - 50, main_item_height, 
-                main_font_size, BLACK, LIGHT_BLUE, 0, 1, 1, quoted_text);
+
+        // Ê¹ÓÃÏàÍ¬µÄ´ó×ÖÌå
+        Send_Xstr(x + 40, y, SCREEN_WIDTH - x - 50, main_item_height,
+                  main_font_size, BLACK, LIGHT_BLUE, 0, 1, 1, quoted_text);
     }
 }
 
 /**
- * @brief ç»˜åˆ¶å·¥ä½œæ¨¡å¼èœå•ï¼ˆäºŒçº§èœå•ï¼‰
+ * @brief »æÖÆ¹¤×÷Ä£Ê½²Ëµ¥£¨¶ş¼¶²Ëµ¥£©
  */
 void Draw_Work_Mode_Menu(void)
 {
-    MenuContext* menu = Get_Menu_Context();
-    Draw_Submenu("å·¥ä½œæ¨¡å¼é€‰æ‹©", work_mode_menu_items, 6, menu->cursor_pos);
+    MenuContext *menu = Get_Menu_Context();
+    Draw_Submenu("¹¤×÷Ä£Ê½Ñ¡Ôñ", work_mode_menu_items, 6, menu->cursor_pos);
 }
 
 /**
- * @brief ç»˜åˆ¶å·¥ä½œå‚æ•°èœå•ï¼ˆäºŒçº§èœå•ï¼‰
+ * @brief »æÖÆ¹¤×÷²ÎÊı²Ëµ¥£¨¶ş¼¶²Ëµ¥£©
  */
 void Draw_Work_Params_Menu(void)
 {
-    MenuContext* menu = Get_Menu_Context();
-    Draw_Submenu("å·¥ä½œå‚æ•°è®¾ç½®", work_params_menu_items, 7, menu->cursor_pos);
+    MenuContext *menu = Get_Menu_Context();
+    Draw_Submenu("¹¤×÷²ÎÊıÉèÖÃ", work_params_menu_items, 7, menu->cursor_pos);
 }
 
 /**
- * @brief ç»˜åˆ¶æ§åˆ¶å™¨å‚æ•°èœå•ï¼ˆäºŒçº§èœå•ï¼‰
+ * @brief »æÖÆ¿ØÖÆÆ÷²ÎÊı²Ëµ¥£¨¶ş¼¶²Ëµ¥£©
  */
 void Draw_Controller_Menu(void)
 {
-    MenuContext* menu = Get_Menu_Context();
-    Draw_Submenu("æ§åˆ¶å™¨å‚æ•°è®¾ç½®", ctrl_params_menu_items, 10, menu->cursor_pos);
-} 
+    MenuContext *menu = Get_Menu_Context();
+    Draw_Submenu("¿ØÖÆÆ÷²ÎÊıÉèÖÃ", ctrl_params_menu_items, 10, menu->cursor_pos);
+}
+
+/**
+ * @brief Ö»¸üĞÂ²Ëµ¥ÏîµÄ¼ıÍ·£¬²»ÖØ»æÕû¸ö²Ëµ¥
+ * @param menu_type ²Ëµ¥ÀàĞÍ
+ * @param old_pos ¾É¹â±êÎ»ÖÃ£¨È«¾ÖÎ»ÖÃ£©
+ * @param new_pos ĞÂ¹â±êÎ»ÖÃ£¨È«¾ÖÎ»ÖÃ£©
+ */
+void Update_Menu_Arrow(MenuState menu_type, int old_pos, int new_pos)
+{
+    uint8_t font_size;
+    uint16_t left_margin, start_y, item_height, arrow_width;
+    int page_old_pos, page_new_pos;
+    int current_page = new_pos / 5; // ¼ÆËãµ±Ç°Ò³Âë
+
+    // ¸ù¾İ²Ëµ¥ÀàĞÍÉèÖÃ²ÎÊı
+    if (menu_type == STATE_MAIN)
+    {
+        font_size = 2;
+        left_margin = 90;
+        start_y = 90;
+        item_height = 50;
+        arrow_width = 40;
+
+        // Ö÷²Ëµ¥²»ĞèÒª¼ÆËãÒ³ÄÚÎ»ÖÃ
+        page_old_pos = old_pos;
+        page_new_pos = new_pos;
+    }
+    else
+    {
+        font_size = 0;
+        left_margin = 110;
+        start_y = 75;
+        item_height = 35;
+        arrow_width = 30;
+
+        // ¶ş¼¶²Ëµ¥ĞèÒª¼ÆËãÒ³ÄÚÏà¶ÔÎ»ÖÃ
+        page_old_pos = old_pos % 5; // ¼ÆËãÒ³ÄÚÎ»ÖÃ
+        page_new_pos = new_pos % 5; // ¼ÆËãÒ³ÄÚÎ»ÖÃ
+    }
+
+    // Çå³ı¾É¼ıÍ·
+    uint16_t old_y = start_y + page_old_pos * item_height;
+    Send_Xstr(left_margin, old_y, arrow_width, item_height,
+              font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\" \"");
+
+    // »æÖÆĞÂ¼ıÍ·
+    uint16_t new_y = start_y + page_new_pos * item_height;
+    Send_Xstr(left_margin, new_y, arrow_width, item_height,
+              font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\"¡ú\"");
+}
+
+/**
+ * @brief ¸ù¾İ²Ëµ¥×´Ì¬»æÖÆ¶ÔÓ¦µÄ²Ëµ¥½çÃæ
+ * @param state ²Ëµ¥×´Ì¬
+ */
+void Draw_Menu_State(MenuState state)
+{
+    switch (state)
+    {
+    case STATE_MAIN:
+        Draw_Menu();
+        break;
+    case STATE_WORK_MODE:
+        Draw_Work_Mode_Menu();
+        break;
+    case STATE_WORK_PARAMS:
+        Draw_Work_Params_Menu();
+        break;
+    case STATE_CTRL_PARAMS:
+        Draw_Controller_Menu();
+        break;
+    default:
+        break;
+    }
+}

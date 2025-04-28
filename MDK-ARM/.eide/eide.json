@@ -134,6 +134,9 @@
             "path": "../screen_control/Src/key.c"
           },
           {
+            "path": "../Screen_Control/Src/menu_draw.c"
+          },
+          {
             "path": "../screen_control/Src/ui.c"
           },
           {

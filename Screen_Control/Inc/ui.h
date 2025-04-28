@@ -5,6 +5,7 @@
 #include "state.h"  
 #include "data.h"
 #include "TJC4832K035_011N.h"
+#include "menu_draw.h"
 #include "stdbool.h"
 
 

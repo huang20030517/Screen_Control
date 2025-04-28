@@ -83,19 +83,30 @@ typedef enum
     STATE_COUNT
 } MenuState;
 
-typedef struct {
+typedef struct
+{
     MenuState current;        // 当前状态
     MenuState prev_states[5]; // 状态堆栈（支持5级返回）
     uint8_t stack_depth;      // 堆栈深度
     int8_t cursor_pos;        // 当前菜单选中项索引
-	
-	
+
 } MenuContext;
 
+/**
+ * @brief 初始化菜单状态
+ */
+void Menu_State_Init(void);
 
+/**
+ * @brief 获取菜单上下文指针，供UI模块使用
+ * @return 返回菜单上下文的指针
+ */
+MenuContext *Get_Menu_Context(void);
 
-
+/**
+ * @brief 菜单按键处理
+ * @param event 按键事件
+ */
 void Handle_Menu_Key(KeyEvent event);
-
 
 #endif

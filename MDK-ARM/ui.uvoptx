@@ -153,17 +153,12 @@
         <Ww>
           <count>0</count>
           <WinNumber>1</WinNumber>
-          <ItemText>key_event</ItemText>
+          <ItemText>g_menu,0x0A</ItemText>
         </Ww>
         <Ww>
           <count>1</count>
           <WinNumber>1</WinNumber>
-          <ItemText>event</ItemText>
-        </Ww>
-        <Ww>
-          <count>2</count>
-          <WinNumber>1</WinNumber>
-          <ItemText>g_menu,0x0A</ItemText>
+          <ItemText>menu</ItemText>
         </Ww>
       </WatchWindow1>
       <Tracepoint>

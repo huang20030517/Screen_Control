@@ -134,19 +134,16 @@
             "path": "../screen_control/Src/key.c"
           },
           {
-            "path": "../screen_control/Src/state.c"
+            "path": "../screen_control/Src/ui.c"
           },
           {
-            "path": "../screen_control/Src/ui.c"
+            "path": "../Screen_Control/Src/state.c"
           },
           {
             "path": "../screen_control/Src/data.c"
           },
           {
             "path": "../Screen_Control/Src/TJC4832K035_011N.c"
-          },
-          {
-            "path": "../Screen_Control/README.md"
           }
         ],
         "folders": []

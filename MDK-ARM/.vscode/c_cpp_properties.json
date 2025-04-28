@@ -3,18 +3,18 @@
         {
             "name": "ui",
             "includePath": [
-                "c:\\Users\\HUANG\\Desktop\\ui\\Core\\Inc",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Drivers\\CMSIS\\Include",
-                "c:\\Users\\HUANG\\Desktop\\ui\\screen_control\\Inc",
-                "c:\\Users\\HUANG\\Desktop\\ui\\MDK-ARM",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Core\\Src",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Drivers\\STM32F4xx_HAL_Driver\\Src",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Screen_Control\\Inc",
-                "c:\\Users\\HUANG\\Desktop\\ui\\screen_control\\Src",
-                "c:\\Users\\HUANG\\Desktop\\ui\\Screen_Control\\Src"
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Core\\Inc",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Drivers\\STM32F4xx_HAL_Driver\\Inc",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Drivers\\STM32F4xx_HAL_Driver\\Inc\\Legacy",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Drivers\\CMSIS\\Device\\ST\\STM32F4xx\\Include",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Drivers\\CMSIS\\Include",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\screen_control\\Inc",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\MDK-ARM",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Core\\Src",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Drivers\\STM32F4xx_HAL_Driver\\Src",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Screen_Control\\Inc",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\screen_control\\Src",
+                "c:\\Users\\Huang\\Desktop\\w\\Screen_Control\\Screen_Control\\Src"
             ],
             "defines": [
                 "USE_HAL_DRIVER",

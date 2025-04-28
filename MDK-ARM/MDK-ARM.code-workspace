@@ -2,8 +2,19 @@
     "folders": [
         {
             "path": "."
+        },
+        {
+            "path": ".."
         }
     ],
-    "settings": {},
+    "settings": {
+        "files.associations": {
+            "ui.h": "c",
+            "key.h": "c",
+            "stdbool.h": "c",
+            "state.h": "c",
+            "tjc4832k035_011n.h": "c"
+        }
+    },
     "extensions": {}
 }

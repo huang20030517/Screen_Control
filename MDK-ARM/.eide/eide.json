@@ -131,6 +131,9 @@
             "path": "../Screen_Control/Inc/config.h"
           },
           {
+            "path": "../Screen_Control/Src/menu_config.c"
+          },
+          {
             "path": "../screen_control/Src/key.c"
           },
           {

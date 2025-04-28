@@ -5,8 +5,8 @@
 /*-------------------------- 界面常量 --------------------------*/
 #define SCREEN_WIDTH 480
 #define SCREEN_HEIGHT 320
-#define FONT_WIDTH 16  // 每个字符宽度（像素）
-#define FONT_HEIGHT 35 // 每个字符高度（像素）
+#define FONT_WIDTH 24  // 每个字符宽度（像素）
+#define FONT_HEIGHT 42 // 每个字符高度（像素）
 
 // 一级菜单内容
 static const char *main_menu_items[] = {
@@ -51,15 +51,13 @@ static const char *ctrl_params_menu_items[] = {
  */
 void Draw_Title(const char *title)
 {
-    uint16_t title_width = strlen(title) * FONT_WIDTH * 1.5; // 适当调整标题区域宽度
+    uint16_t title_width = strlen(title) * FONT_WIDTH;
     uint16_t title_x = (SCREEN_WIDTH - title_width) / 2;
 
-    // 构建带引号的标题字符串
     char quoted_title[32];
     snprintf(quoted_title, sizeof(quoted_title), "\"%s\"", title);
 
-    // 使用中等大小字体(fontid=2)，保持水平居中(xcenter=1)和垂直居中(ycenter=1)
-    Send_Xstr(title_x, 20, title_width, FONT_HEIGHT * 1.2, 2, BLACK, LIGHT_BLUE, 1, 1, 1, quoted_title);
+    Send_Xstr(title_x, 20, title_width, FONT_HEIGHT, 2, BLACK, LIGHT_BLUE, 1, 1, 1, quoted_title);
 }
 
 /**
@@ -76,7 +74,7 @@ void Draw_Menu_Item(uint16_t x, uint16_t y, const char *text, uint8_t is_selecte
     // 箭头宽度
     const uint16_t arrow_width = 30;
 
-    // 绘制箭头指示当前选中项（y轴居中对齐）
+    // 绘制箭头指示当前选中项
     if (is_selected)
     {
         Send_Xstr(x, y, arrow_width, item_height, font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\"→\"");
@@ -86,11 +84,10 @@ void Draw_Menu_Item(uint16_t x, uint16_t y, const char *text, uint8_t is_selecte
         Send_Xstr(x, y, arrow_width, item_height, font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\" \"");
     }
 
-    // 绘制菜单项文本（左对齐，y轴居中对齐）
     char quoted_text[64];
     snprintf(quoted_text, sizeof(quoted_text), "\"%s\"", text);
 
-    // 文本区域从箭头区域右侧开始，宽度自适应
+    // 文本区域从箭头区域右侧开始
     Send_Xstr(x + arrow_width, y, SCREEN_WIDTH - x - arrow_width - 10, item_height,
               font_size, BLACK, LIGHT_BLUE, 0, 1, 1, quoted_text);
 }
@@ -144,7 +141,6 @@ static void Draw_Submenu(const char *title, const char **items, int item_count, 
         int total_pages = (item_count + items_per_page - 1) / items_per_page;
         char page_info[20];
         snprintf(page_info, sizeof(page_info), "\"%d/%d\"", current_page + 1, total_pages);
-        // 右下角显示页码，右对齐(xcenter=2)
         Send_Xstr(SCREEN_WIDTH - 60, SCREEN_HEIGHT - 30, 50, 20, 1, BLACK, LIGHT_BLUE, 2, 1, 1, page_info);
     }
 }
@@ -270,29 +266,4 @@ void Update_Menu_Arrow(MenuState menu_type, int old_pos, int new_pos)
     uint16_t new_y = start_y + page_new_pos * item_height;
     Send_Xstr(left_margin, new_y, arrow_width, item_height,
               font_size, BLACK, LIGHT_BLUE, 0, 1, 1, "\"→\"");
-}
-
-/**
- * @brief 根据菜单状态绘制对应的菜单界面
- * @param state 菜单状态
- */
-void Draw_Menu_State(MenuState state)
-{
-    switch (state)
-    {
-    case STATE_MAIN:
-        Draw_Menu();
-        break;
-    case STATE_WORK_MODE:
-        Draw_Work_Mode_Menu();
-        break;
-    case STATE_WORK_PARAMS:
-        Draw_Work_Params_Menu();
-        break;
-    case STATE_CTRL_PARAMS:
-        Draw_Controller_Menu();
-        break;
-    default:
-        break;
-    }
 }

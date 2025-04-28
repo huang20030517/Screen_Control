@@ -41,11 +41,6 @@ void Draw_Work_Params_Menu(void);
  */
 void Draw_Controller_Menu(void);
 
-/**
- * @brief 根据菜单状态绘制对应的菜单界面
- * @param state 菜单状态
- */
-void Draw_Menu_State(MenuState state);
 
 /**
  * @brief 只更新菜单项的箭头，不重绘整个菜单

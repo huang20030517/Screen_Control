@@ -131,9 +131,6 @@
             "path": "../Screen_Control/Inc/config.h"
           },
           {
-            "path": "../Screen_Control/Src/menu_config.c"
-          },
-          {
             "path": "../screen_control/Src/key.c"
           },
           {
@@ -342,7 +339,9 @@
             "link-time-optimization": false,
             "one-elf-section-per-function": true,
             "short-enums#wchar": true,
-            "warnings": "ac5-like-warnings"
+            "warnings": "ac5-like-warnings",
+            "C_FLAGS": "-Wno-invalid-source-encoding",
+            "CXX_FLAGS": "-Wno-invalid-source-encoding"
           },
           "asm-compiler": {
             "$use": "asm-auto"
